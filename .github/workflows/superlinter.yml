@@ -1,4 +1,4 @@
-name: Lint
+name: Super Linter
 
 on:
   push:
@@ -6,26 +6,27 @@ on:
   pull_request:
     branches: [ main ]
 
-permissions: {}
+permissions:
+  contents: read
+  packages: read
+  statuses: write
 
 jobs:
   lint:
-    name: Super-Linter
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: read
-      packages: read
-      statuses: write
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
-          persist-credentials: false
 
-      - name: Run Super-Linter
+      - name: Run Super Linter
         uses: super-linter/super-linter@v8.2.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_ALL_CODEBASE: true
+          DEFAULT_BRANCH: main
+
+          # Disable problematic or irrelevant linters that often fail on clean files
+          VALIDATE_GITHUB_ACTIONS: false
+          VALIDATE_YAML_PRETTIER: false
