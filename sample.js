@@ -1,16 +1,25 @@
-// sample.js
-/**
- * Simple JavaScript example for Super-Linter testing
- */
+name: Run JavaScript
 
-function add(a, b) {
-  return a + b;
-}
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
-function greet(name) {
-  console.log(`Hello, ${name}!`);
-}
+jobs:
+  run-js:
+    runs-on: ubuntu-latest
 
-// Example usage
-console.log(add(10, 5));
-greet("Krupa");
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Run JS file
+        run: node sample.js
